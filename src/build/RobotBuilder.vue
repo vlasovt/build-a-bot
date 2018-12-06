@@ -2,7 +2,7 @@
   <div class="content">
     <button class="add-to-cart" @click="addToCart()">Add to Cart</button>
     <div class="top-row">
-      <div class="top part">
+      <div class="top part" :style="headBorderStyle">
         <div class="robot-name">
           {{ selectedRobot.head.title }}
           <span v-if="selectedRobot.head.onSale" class="sale">Sale!</span>
@@ -18,7 +18,7 @@
         <button @click="selectPreviousLeftArm()" class="prev-selector">&#9668;</button>
         <button @click="selectNextLeftArm()" class="next-selector">&#9658;</button>
       </div>
-      <div class="center part">
+      <div :class="[torsoBorderClass, 'top', 'part']">
         <img :src="selectedRobot.torso.src" title="left arm"/>
         <button @click="selectPreviousTorso()" class="prev-selector">&#9668;</button>
         <button @click="selectNextTorso()" class="next-selector">&#9658;</button>
@@ -58,6 +58,7 @@
 
 <script>
 import robotParts from '../data/parts';
+import createdHookMixin from './created-hook-mixin';
 
 function selectNextValidIndex(selectedIndex, partsLength) {
   const limitIndex = partsLength - 1;
@@ -92,7 +93,18 @@ export default {
         base: robotParts.bases[this.selectedBaseIndex],
       };
     },
+    headBorderStyle() {
+      return {
+        border: this.selectedRobot.head.onSale
+          ? '3px solid red'
+          : '3px solid #aaa',
+      };
+    },
+    torsoBorderClass() {
+      return { 'sale-border': this.selectedRobot.torso.onSale };
+    },
   },
+  mixins: [createdHookMixin],
   methods: {
     selectNextHead() {
       this.selectedHeadIndex = selectNextValidIndex(this.selectedHeadIndex,
@@ -142,15 +154,17 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
 .part {
   position: relative;
   width:165px;
   height:165px;
   border: 3px solid #aaa;
 }
-.part img {
-  width:165px;
+.part {
+  img {
+    width:165px;
+  }
 }
 .top-row {
   display:flex;
@@ -239,6 +253,9 @@ export default {
 }
 .sale {
   color: red;
+}
+.sale-border {
+  border: 3px solid red;
 }
 .content {
   position: relative;
