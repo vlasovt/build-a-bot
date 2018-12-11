@@ -1,6 +1,6 @@
 <template>
   <div class="sidebar">
-    Browse Sidebar
+    Browse
   </div>
 </template>
 
