@@ -43,12 +43,15 @@
 
 <script>
 
+import { mapState } from 'vuex';
+
 export default {
   name: 'app',
   computed: {
-    cart() {
-      return this.$store.state.robots.cart;
-    },
+    // another way of using mapState: ...mapState({ cart: state => state.robots.cart }),
+    // another way of using mapState: ...mapState({ rootFoo: 'foo' }),
+    // another way of using mapState: ...mapState(['foo']),
+    ...mapState('robots', { cart: 'cart' }), // only works with namespased stores
   },
 };
 </script>
