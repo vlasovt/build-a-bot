@@ -3,7 +3,7 @@
     <router-link :to="{
         name: 'Parts',
         params: {
-          id: this.selectedPart.id, 
+          id: this.selectedPart.id,
           partType: this.selectedPart.type,
         },
       }">
@@ -11,11 +11,14 @@
     </router-link>
     <button @click="selectPreviousPart()" class="prev-selector"></button>
     <button @click="selectNextPart()" class="next-selector"></button>
-    <span class="sale" v-show="selectedPart.onSale">Sale!</span>
+    <span v-pin:position.top.right class="sale" v-show="selectedPart.onSale">Sale!</span>
+    <span v-salepin="{top: '5px', left: '5px'}" class="sale" v-show="selectedPart.onSale">Sale!</span>
   </div>
 </template>
 
 <script>
+
+import pinDirective from '../shared/pin-directive';
 
 function getNextValidIndex(selectedIndex, partsLength) {
   const limitIndex = partsLength - 1;
@@ -27,6 +30,7 @@ function getPreviousValidIndex(selectedIndex) {
 }
 
 export default {
+  directives: { pin: pinDirective },
   props: {
     parts: {
       type: Array,
@@ -73,7 +77,7 @@ export default {
       this.$router.push({
         name: 'Parts',
         params: {
-          id: this.selectedPart.id, 
+          id: this.selectedPart.id,
           partType: this.selectedPart.type,
         },
       });
@@ -91,9 +95,6 @@ export default {
   cursor: pointer;
 }
 .sale {
-  position: absolute;
-  bottom: 5px;
-  right: 5px;
   color: white;
   background-color: red;
   padding: 3px;
